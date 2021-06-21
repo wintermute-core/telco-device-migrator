@@ -1,0 +1,5 @@
+network_service_type: "B"
+device: "id12"
+configuration:
+  configB1: ""
+  configB2: "value12_2"
