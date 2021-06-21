@@ -1,0 +1,5 @@
+network_service_type: "A"
+device_id: "uuid21"
+parameters:
+  paramA1: "value21_1"
+  paramA2: "0"
