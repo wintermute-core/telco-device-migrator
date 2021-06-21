@@ -1,10 +1,17 @@
 package com.swisscom.kratos.model;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import java.util.Map;
+
+@Data
 public class NetworkServiceB extends NetworkService {
-    public NetworkServiceB(String networkServiceType) {
-        super(networkServiceType);
-    }
+
+    @JsonProperty("device")
+    private String device;
+
+    @JsonProperty("configuration")
+    private Map<String, Object> configuration;
+
 }
