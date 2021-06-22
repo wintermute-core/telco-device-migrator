@@ -30,13 +30,21 @@ class Device1ConfigServiceTest {
         Collection<String> listDevices = device1ConfigService.listDevices();
         assertFalse(listDevices.isEmpty());
         assertEquals(2, listDevices.size());
-        assertTrue(listDevices.contains("device11.json"));
-        assertTrue(listDevices.contains("device12.json"));
+        assertTrue(listDevices.contains("device11"));
+        assertTrue(listDevices.contains("device12"));
     }
 
     @Test
-    void deviceLoading() {
+    void deviceConfigLoading() {
         Optional<DeviceConfig> deviceConfig = device1ConfigService.fetchConfiguration("device12.json");
+        assertTrue(deviceConfig.isPresent());
+        DeviceConfig deviceConfig1 = deviceConfig.get();
+        assertEquals("id12", deviceConfig1.getConfig().get("deviceId"));
+    }
+
+    @Test
+    void deviceConfigLoadingWithoutExtension() {
+        Optional<DeviceConfig> deviceConfig = device1ConfigService.fetchConfiguration("device12");
         assertTrue(deviceConfig.isPresent());
         DeviceConfig deviceConfig1 = deviceConfig.get();
         assertEquals("id12", deviceConfig1.getConfig().get("deviceId"));

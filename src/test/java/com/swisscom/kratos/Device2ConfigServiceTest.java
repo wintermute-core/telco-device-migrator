@@ -29,14 +29,22 @@ class Device2ConfigServiceTest {
         Collection<String> listDevices = device2ConfigService.listDevices();
         assertFalse(listDevices.isEmpty());
         assertEquals(3, listDevices.size());
-        assertTrue(listDevices.contains("device21.txt"));
-        assertTrue(listDevices.contains("device22.txt"));
-        assertTrue(listDevices.contains("device23.txt"));
+        assertTrue(listDevices.contains("device21"));
+        assertTrue(listDevices.contains("device22"));
+        assertTrue(listDevices.contains("device23"));
     }
 
     @Test
-    void deviceLoading() {
+    void deviceConfigLoading() {
         Optional<DeviceConfig> deviceConfig = device2ConfigService.fetchConfiguration("device22.txt");
+        assertTrue(deviceConfig.isPresent());
+        DeviceConfig deviceConfig1 = deviceConfig.get();
+        assertEquals("uuid22", deviceConfig1.getConfig().get("uuid"));
+    }
+
+    @Test
+    void deviceConfigWithoutExtensionLoading() {
+        Optional<DeviceConfig> deviceConfig = device2ConfigService.fetchConfiguration("device22");
         assertTrue(deviceConfig.isPresent());
         DeviceConfig deviceConfig1 = deviceConfig.get();
         assertEquals("uuid22", deviceConfig1.getConfig().get("uuid"));

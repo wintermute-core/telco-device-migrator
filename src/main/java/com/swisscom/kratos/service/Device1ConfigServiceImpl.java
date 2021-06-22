@@ -38,6 +38,9 @@ public class Device1ConfigServiceImpl extends AbstractDeviceConfigService {
 
     @Override
     public Optional<DeviceConfig> fetchConfiguration(String deviceId) {
+        if (!deviceId.endsWith(".json")) {
+            deviceId = deviceId + ".json";
+        }
         File file = new File(configDir, deviceId);
         if (!file.exists()) {
             return Optional.empty();

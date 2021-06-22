@@ -2,6 +2,7 @@ package com.swisscom.kratos.service;
 
 import com.swisscom.kratos.model.DeviceConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,7 +33,7 @@ public abstract class AbstractDeviceConfigService implements DeviceConfigService
         try {
             return Files.list(Path.of(dir))
                     .filter(path -> path.getFileName().toString().endsWith(extension))
-                    .map(path -> path.getFileName().toString())
+                    .map(path -> FilenameUtils.getBaseName(path.getFileName().toString()))
                     .collect(Collectors.toList());
         } catch (IOException e) {
             log.error("Failed to list files {} {}", dir, extension);

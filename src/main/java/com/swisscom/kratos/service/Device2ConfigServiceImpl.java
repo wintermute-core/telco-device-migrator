@@ -33,7 +33,9 @@ public class Device2ConfigServiceImpl extends AbstractDeviceConfigService {
 
     @Override
     public Optional<DeviceConfig> fetchConfiguration(String deviceId) {
-
+        if (!deviceId.endsWith(".txt")) {
+            deviceId = deviceId + ".txt";
+        }
         File file = new File(configDir, deviceId);
         if (!file.exists()) {
             return Optional.empty();
