@@ -1,12 +1,14 @@
 package com.swisscom.kratos;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.swisscom.kratos.model.DeviceConfig;
 import com.swisscom.kratos.service.Device1ConfigServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
 import java.util.Collection;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,6 +33,14 @@ class Device1ConfigServiceTest {
         assertEquals(2, listDevices.size());
         assertTrue(listDevices.contains("device11.json"));
         assertTrue(listDevices.contains("device12.json"));
+    }
+
+    @Test
+    void deviceLoading() {
+        Optional<DeviceConfig> deviceConfig = device1ConfigService.fetchConfiguration("device12.json");
+        assertTrue(deviceConfig.isPresent());
+        DeviceConfig deviceConfig1 = deviceConfig.get();
+        assertEquals("id12", deviceConfig1.getConfig().get("deviceId"));
     }
 
 }
