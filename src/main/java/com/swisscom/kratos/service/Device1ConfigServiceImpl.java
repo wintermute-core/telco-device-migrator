@@ -34,14 +34,7 @@ public class Device1ConfigServiceImpl extends AbstractDeviceConfigService {
 
     @Override
     public Collection<String> listDevices() {
-        try {
-            return Files.list(Path.of(configDir))
-                    .filter(path -> path.getFileName().toString().endsWith(".json"))
-                    .map(path -> path.getFileName().toString())
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return listFiles(configDir, ".json");
     }
 
     @Override
