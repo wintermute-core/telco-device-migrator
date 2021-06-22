@@ -1,6 +1,7 @@
 package com.swisscom.kratos.service;
 
 import com.swisscom.kratos.model.DeviceConfig;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,12 +15,13 @@ import java.util.stream.Collectors;
 /**
  * Common code for configuration service
  */
+@Slf4j
 public abstract class AbstractDeviceConfigService implements DeviceConfigService {
 
     @Override
     public Map<String, DeviceConfig> readConfiguration(Collection<String> deviceIds) {
         Map<String, DeviceConfig> map = new HashMap<>();
-        for(String deviceId : deviceIds) {
+        for (String deviceId : deviceIds) {
             Optional<DeviceConfig> deviceConfig = fetchConfiguration(deviceId);
             deviceConfig.ifPresent(config -> map.put(deviceId, config));
         }
@@ -33,6 +35,7 @@ public abstract class AbstractDeviceConfigService implements DeviceConfigService
                     .map(path -> path.getFileName().toString())
                     .collect(Collectors.toList());
         } catch (IOException e) {
+            log.error("Failed to list files {} {}", dir, extension);
             throw new RuntimeException(e);
         }
     }

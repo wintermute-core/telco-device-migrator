@@ -15,4 +15,8 @@ public class NetworkServiceC extends NetworkService {
 
     @JsonProperty("conf")
     private Map<String, Object> configuration;
+
+    public NetworkServiceC() {
+        super("C");
+    }
 }

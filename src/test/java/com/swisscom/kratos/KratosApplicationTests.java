@@ -1,6 +1,5 @@
 package com.swisscom.kratos;
 
-import com.swisscom.kratos.service.Device1ConfigServiceImpl;
 import com.swisscom.kratos.service.Device2ConfigServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

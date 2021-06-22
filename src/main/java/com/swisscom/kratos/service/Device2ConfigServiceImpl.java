@@ -39,7 +39,7 @@ public class Device2ConfigServiceImpl extends AbstractDeviceConfigService {
         }
 
         Properties appProps = new Properties();
-        try(FileInputStream stream = new FileInputStream(file)) {
+        try (FileInputStream stream = new FileInputStream(file)) {
             appProps.load(stream);
             Map<String, Object> config = new HashMap<>();
             appProps.forEach((key, value) -> config.put(key + "", value));
@@ -48,6 +48,7 @@ public class Device2ConfigServiceImpl extends AbstractDeviceConfigService {
             device2Config.setConfig(config);
             return Optional.of(device2Config);
         } catch (IOException e) {
+            log.error("Failed to read config from {}", deviceId, e);
             throw new RuntimeException(e);
         }
     }

@@ -10,12 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -50,6 +47,7 @@ public class Device1ConfigServiceImpl extends AbstractDeviceConfigService {
             device1Config.setConfig(map);
             return Optional.of(device1Config);
         } catch (IOException e) {
+            log.error("Failed to read config from {}", deviceId, e);
             throw new RuntimeException(e);
         }
     }

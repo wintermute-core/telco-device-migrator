@@ -1,8 +1,6 @@
 package com.swisscom.kratos;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swisscom.kratos.model.DeviceConfig;
-import com.swisscom.kratos.service.Device1ConfigServiceImpl;
 import com.swisscom.kratos.service.Device2ConfigServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
