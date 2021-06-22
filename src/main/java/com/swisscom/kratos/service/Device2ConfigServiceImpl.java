@@ -3,6 +3,7 @@ package com.swisscom.kratos.service;
 import com.swisscom.kratos.model.Device2Config;
 import com.swisscom.kratos.model.DeviceConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +34,10 @@ public class Device2ConfigServiceImpl extends AbstractDeviceConfigService {
 
     @Override
     public Optional<DeviceConfig> fetchConfiguration(String deviceId) {
-        if (!deviceId.endsWith(".txt")) {
-            deviceId = deviceId + ".txt";
+        if (deviceId.endsWith(".txt")) {
+            deviceId = FilenameUtils.removeExtension(deviceId);
         }
-        File file = new File(configDir, deviceId);
+        File file = new File(configDir, deviceId + ".txt");
         if (!file.exists()) {
             return Optional.empty();
         }

@@ -4,7 +4,7 @@ import com.swisscom.kratos.model.DeviceConfig;
 import com.swisscom.kratos.model.MappingLogic;
 import com.swisscom.kratos.model.NetworkService;
 
-import java.util.Optional;
+import java.util.Collection;
 
 /**
  * Service to map device configuration to NetworkConfiguration.
@@ -19,7 +19,7 @@ public interface MappingService {
     /**
      * Test mapping of one device config to network service
      */
-    Optional<NetworkService> dryRun(DeviceConfig config);
+    Collection<NetworkService> dryRun(DeviceConfig config);
 
     /**
      * Submit for async execution mapping task of all devices to network services.

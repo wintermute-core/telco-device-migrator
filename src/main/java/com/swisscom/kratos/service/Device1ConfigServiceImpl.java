@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swisscom.kratos.model.Device1Config;
 import com.swisscom.kratos.model.DeviceConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -38,10 +39,11 @@ public class Device1ConfigServiceImpl extends AbstractDeviceConfigService {
 
     @Override
     public Optional<DeviceConfig> fetchConfiguration(String deviceId) {
-        if (!deviceId.endsWith(".json")) {
-            deviceId = deviceId + ".json";
+        if (deviceId.endsWith(".json")) {
+            deviceId = FilenameUtils.removeExtension(deviceId);
         }
-        File file = new File(configDir, deviceId);
+
+        File file = new File(configDir, deviceId + ".json");
         if (!file.exists()) {
             return Optional.empty();
         }

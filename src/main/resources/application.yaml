@@ -15,28 +15,29 @@ mapping:
     import com.swisscom.kratos.model.*;
     import java.util.Map;
 
-    global java.util.Map results;
+    global java.util.Collection results;
 
     dialect "mvel"
 
     rule "device1 mapping"
       when
-        config: com.swisscom.kratos.model.Device1Config()
+        deviceConfig: com.swisscom.kratos.model.Device1Config()
       then
-        if (config.getConfig().get("param1") != null) {
+        config = deviceConfig.getConfig()
+        if (config["param1"] != null) {
             NetworkServiceA ns = new NetworkServiceA();
-            ns.device = "id11";
-            ns.configuration["paramA1"] = "value11";
-            results.put("service", ns);
-            return;
+            ns.serviceId = deviceConfig.deviceId + "_serviceA";
+            ns.device = config["deviceId"];
+            ns.configuration["paramA1"] = config["param1"];
+            results.add(ns);
         }
-        if (config.getConfig().get("param2") != null) {
+        if (config["param2"] != null) {
             NetworkServiceB ns2 = new NetworkServiceB();
-            ns2.device = "id11";
-            ns2.configuration["configB1"] = "value11";
-            ns2.configuration["configB2"] = "value12";
-            results.put("service", ns2);
-            return;
+            ns2.serviceId = deviceConfig.deviceId + "_serviceB";
+            ns2.device = config["deviceId"];
+            ns2.configuration["configB1"] = config["param1"];
+            ns2.configuration["configB2"] = config["param2"];
+            results.add(ns2);
         }
     end
 
@@ -44,6 +45,5 @@ mapping:
       when
         config: com.swisscom.kratos.model.Device2Config()
       then
-        results.put("mapping", "mapping2");
-        results.put("toString", config.toString());
+
     end

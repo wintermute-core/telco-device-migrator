@@ -20,9 +20,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Service
 @Slf4j
@@ -51,7 +50,7 @@ public class MappingServiceImpl implements MappingService {
     }
 
     @Override
-    public Optional<NetworkService> dryRun(DeviceConfig config) {
+    public Collection<NetworkService> dryRun(DeviceConfig config) {
         KieSession kieSession = null;
         try {
             kieSession = mapRules();
@@ -59,14 +58,14 @@ public class MappingServiceImpl implements MappingService {
             KieServices kieServices = KieServices.Factory.get();
             kieServices.getLoggers().newFileLogger(kieSession, "log");
 
-            Map<String, Object> results = new HashMap<>();
+            Collection<NetworkService> results = new ArrayList<>();
             kieSession.setGlobal("results", results);
 
             kieSession.insert(config);
 
             kieSession.fireAllRules();
             log.info("Output {}", results);
-            return Optional.ofNullable((NetworkService)results.get("service"));
+            return results;
         } catch (IOException e) {
             log.error("Failed mapping evaluation", e);
             throw new RuntimeException(e);
