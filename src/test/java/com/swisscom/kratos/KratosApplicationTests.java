@@ -1,9 +1,6 @@
 package com.swisscom.kratos;
 
-import com.swisscom.kratos.model.Device1Config;
-import com.swisscom.kratos.model.Device2Config;
-import com.swisscom.kratos.model.NetworkService;
-import com.swisscom.kratos.model.NetworkServiceA;
+import com.swisscom.kratos.model.*;
 import com.swisscom.kratos.service.Device2ConfigServiceImpl;
 import com.swisscom.kratos.service.MappingService;
 import org.drools.core.impl.InternalKnowledgeBase;
@@ -48,8 +45,17 @@ class KratosApplicationTests {
 	}
 
 	@Test
-	void mappingDevice2() {
-		Device2Config device2Сonfig = new Device2Config();
-		mappingService.dryRun(device2Сonfig);
+	void mappingDevice1ToNetworkServiceB() {
+		Device1Config device1Config = new Device1Config();
+		device1Config.getConfig().put("param2", "tomato");
+
+		Optional<NetworkService> networkService = mappingService.dryRun(device1Config);
+		assertTrue(networkService.isPresent());
+
+		NetworkServiceB serviceB = (NetworkServiceB) networkService.get();
+		assertEquals("id11", serviceB.getDevice());
+		assertEquals("value11", serviceB.getConfiguration().get("configB1"));
+		assertEquals("value12", serviceB.getConfiguration().get("configB2"));
+
 	}
 }
