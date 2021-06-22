@@ -3,7 +3,6 @@ package com.swisscom.kratos.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swisscom.kratos.model.Device1Config;
 import com.swisscom.kratos.model.DeviceConfig;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,13 +15,16 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-@AllArgsConstructor
 public class Device1ConfigServiceImpl extends AbstractDeviceConfigService {
 
-    @Value("${devices.model1.input}")
     private final String configDir;
 
     private final ObjectMapper objectMapper;
+
+    public Device1ConfigServiceImpl(@Value("${devices.model1.input}") String configDir, ObjectMapper objectMapper) {
+        this.configDir = configDir;
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public String serviceId() {

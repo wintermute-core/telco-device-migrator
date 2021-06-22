@@ -10,19 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 class KratosApplicationTests {
 
-
-	@Autowired
-	private Device2ConfigServiceImpl device2ConfigService;
-
 	@Test
 	void contextLoads() {
 	}
 
 
-
-	@Test
-	void deviceModel2Loaded() {
-		assertEquals("model2", device2ConfigService.serviceId());
-	}
 
 }

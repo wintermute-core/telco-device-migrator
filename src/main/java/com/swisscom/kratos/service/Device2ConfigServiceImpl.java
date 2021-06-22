@@ -2,7 +2,6 @@ package com.swisscom.kratos.service;
 
 import com.swisscom.kratos.model.Device2Config;
 import com.swisscom.kratos.model.DeviceConfig;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,11 +13,13 @@ import java.util.*;
 
 @Service
 @Slf4j
-@AllArgsConstructor
 public class Device2ConfigServiceImpl extends AbstractDeviceConfigService {
 
-    @Value("${devices.model2.input}")
     private final String configDir;
+
+    public Device2ConfigServiceImpl(@Value("${devices.model2.input}") String configDir) {
+        this.configDir = configDir;
+    }
 
     @Override
     public String serviceId() {

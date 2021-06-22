@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swisscom.kratos.model.NetworkService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +16,20 @@ import java.io.IOException;
  * Persist service updates in files
  */
 @Service
-@AllArgsConstructor
 @Slf4j
 public class NetworkServiceConfigurerImpl implements NetworkServiceConfigurer {
 
-    @Value("${services.output}")
     private final String outputDir;
 
     private final ObjectMapper objectMapper;
+
+    public NetworkServiceConfigurerImpl(@Value("${services.output}") String outputDir,
+                                        @Autowired
+                                        @Qualifier("yamlObjectMapper") ObjectMapper objectMapper) {
+
+        this.outputDir = outputDir;
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public void apply(NetworkService networkService) {
