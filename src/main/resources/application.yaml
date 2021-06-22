@@ -1,0 +1,7 @@
+
+devices:
+  input: "input"
+
+services:
+  output: "output"
+
