@@ -1,7 +1,10 @@
 
 devices:
-  input: "input"
+  model1:
+    input: "input"
+  model2:
+    input: "input"
 
 services:
-  output: "output"
+  output: "app-output"
 
