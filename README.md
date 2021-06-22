@@ -2,6 +2,16 @@
 
 Services migration tool
 
+## Tech stack
+
+  * Java 11
+  * Spring Boot
+  * Kie
+  * Drools
+  * JUnit
+  * Lombok
+  * Swagger
+
 ## Development
 
 Local execution:

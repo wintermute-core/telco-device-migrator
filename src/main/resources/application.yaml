@@ -7,3 +7,22 @@ devices:
 services:
   output: "app-output"
 
+
+mapping:
+  logic: |
+    package com.swisscom.kratos.service;
+
+    import com.swisscom.kratos.model.*;
+    import java.util.Map;
+
+    global java.util.Map results;
+
+    dialect "mvel"
+
+    rule "mapping"
+      when
+        config: com.swisscom.kratos.model.Device1Config()
+      then
+        results.put("mapping", "test");
+        results.put("toString", config.toString());
+    end
