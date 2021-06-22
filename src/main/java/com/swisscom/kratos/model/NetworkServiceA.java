@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -17,7 +18,7 @@ public class NetworkServiceA extends NetworkService {
     private String device;
 
     @JsonProperty("parameters")
-    private Map<String, Object> configuration;
+    private Map<String, Object> configuration = new HashMap<>();
 
     public NetworkServiceA() {
         super("A");

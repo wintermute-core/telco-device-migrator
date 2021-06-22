@@ -19,10 +19,31 @@ mapping:
 
     dialect "mvel"
 
-    rule "mapping"
+    rule "device1 mapping"
       when
         config: com.swisscom.kratos.model.Device1Config()
       then
-        results.put("mapping", "test");
+        if (config.getConfig().get("param1") != null) {
+            NetworkServiceA ns = new NetworkServiceA();
+            ns.device = "id11";
+            ns.configuration["paramA1"] = "value11";
+            results.put("service", ns);
+            return;
+        }
+        if (config.getConfig().get("param2") != null) {
+            NetworkServiceB ns2 = new NetworkServiceB();
+            ns2.device = "id11";
+            ns2.configuration["configB1"] = "value11";
+            ns2.configuration["configB2"] = "value12";
+            results.put("service", ns2);
+            return;
+        }
+    end
+
+    rule "device2 mapping"
+      when
+        config: com.swisscom.kratos.model.Device2Config()
+      then
+        results.put("mapping", "mapping2");
         results.put("toString", config.toString());
     end

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -50,7 +51,7 @@ public class MappingServiceImpl implements MappingService {
     }
 
     @Override
-    public NetworkService dryRun(DeviceConfig config) {
+    public Optional<NetworkService> dryRun(DeviceConfig config) {
         KieSession kieSession = null;
         try {
             kieSession = mapRules();
@@ -65,6 +66,7 @@ public class MappingServiceImpl implements MappingService {
 
             kieSession.fireAllRules();
             log.info("Output {}", results);
+            return Optional.ofNullable((NetworkService)results.get("service"));
         } catch (IOException e) {
             log.error("Failed mapping evaluation", e);
             throw new RuntimeException(e);
@@ -73,7 +75,6 @@ public class MappingServiceImpl implements MappingService {
                 kieSession.destroy();
             }
         }
-        return null;
     }
 
     @Override
