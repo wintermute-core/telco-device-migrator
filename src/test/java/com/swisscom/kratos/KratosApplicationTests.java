@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swisscom.kratos.model.*;
 import com.swisscom.kratos.service.MappingService;
 import com.swisscom.kratos.service.MappingServiceImpl;
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
@@ -109,10 +111,16 @@ class KratosApplicationTests {
         assertEquals("value23_1", serviceB.getConfiguration().get("configB1"));
     }
 
+    @Value("${services.output}")
+    private String outputDir;
+
     @Test
-    void testScheduling() {
-        MappingServiceImpl m = (MappingServiceImpl) mappingService;
-        m.createExecutionJob().run();
+    void testScheduling() throws IOException {
+        MappingServiceImpl mappingImpl = (MappingServiceImpl) mappingService;
+        File dir = new File(outputDir);
+        FileUtils.cleanDirectory(dir);
+        mappingImpl.createExecutionJob().run();
+        assertNotEquals(0, dir.listFiles().length);
     }
 
     private Device1Config config1(String file) {
