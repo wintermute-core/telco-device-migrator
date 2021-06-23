@@ -31,7 +31,7 @@ public class DeviceConfigController {
 
     @GetMapping("/services")
     public Collection<String> listAllServices() {
-        return  map.keySet();
+        return map.keySet();
     }
 
     @GetMapping("/service/{service}")

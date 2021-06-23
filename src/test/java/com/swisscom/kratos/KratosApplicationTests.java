@@ -58,7 +58,7 @@ class KratosApplicationTests {
         NetworkServiceB serviceB = (NetworkServiceB) iterator.next();
         assertEquals("id12", serviceB.getDevice());
         assertEquals("value12_2", serviceB.getConfiguration().get("configB2"));
-        assertNull(serviceB.getConfiguration().get("configB1"));
+        assertEquals("", serviceB.getConfiguration().get("configB1"));
     }
 
     @Test

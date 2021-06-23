@@ -53,12 +53,14 @@ Notes:
 
 ## Development
 
+Input files: `input`
+
+Generated output files: `app-output`
+
 Local execution:
 ```
 ./gradlew bootRun
 ```
-
-
 
 Tests execution
 ```

@@ -8,7 +8,6 @@ import java.util.Collection;
 
 /**
  * Service to map device configuration to NetworkConfiguration.
- *
  */
 public interface MappingService {
 

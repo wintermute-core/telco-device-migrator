@@ -40,7 +40,7 @@ public class MappingServiceImpl implements MappingService {
 
     private MappingLogic mappingLogic;
 
-    private Map<String, Future> tasks = new HashMap<>();
+    private final Map<String, Future> tasks = new HashMap<>();
 
     @Value("${mapping.logic}")
     private String defaultCode;
@@ -92,8 +92,8 @@ public class MappingServiceImpl implements MappingService {
                         .map(c -> {
                             log.info("Mapping device {}", c.getDeviceId());
                             return mapDeviceConfig(c, logic);
-                        }).flatMap( c -> c.stream())
-                        .forEach( ns -> {
+                        }).flatMap(c -> c.stream())
+                        .forEach(ns -> {
                             log.info("Persisting network service {}", ns.getServiceId());
                             networkServiceConfigurer.apply(ns);
                         });
