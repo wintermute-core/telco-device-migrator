@@ -2,98 +2,141 @@ package com.swisscom.kratos;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swisscom.kratos.model.*;
-import com.swisscom.kratos.service.Device2ConfigServiceImpl;
 import com.swisscom.kratos.service.MappingService;
-import org.drools.core.impl.InternalKnowledgeBase;
-import org.drools.core.impl.KnowledgeBaseFactory;
+import com.swisscom.kratos.service.MappingServiceImpl;
 import org.junit.jupiter.api.Test;
-import org.kie.api.io.ResourceType;
-import org.kie.api.runtime.KieSession;
-import org.kie.internal.builder.KnowledgeBuilder;
-import org.kie.internal.builder.KnowledgeBuilderError;
-import org.kie.internal.builder.KnowledgeBuilderErrors;
-import org.kie.internal.builder.KnowledgeBuilderFactory;
-import org.kie.internal.io.ResourceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class KratosApplicationTests {
 
-	@Autowired
-	private MappingService mappingService;
+    @Autowired
+    private MappingService mappingService;
 
-	@Autowired
-	protected ObjectMapper objectMapper;
+    @Autowired
+    protected ObjectMapper objectMapper;
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
-	@Test
-	void mappingDevice1ToMultipleServices() {
-		Device1Config device1Config = config1("device11.json");
+    @Test
+    void mappingDevice1ToMultipleServices() {
+        Device1Config device1Config = config1("device11.json");
 
-		Collection<NetworkService> networkServices = mappingService.dryRun(device1Config);
-		assertFalse(networkServices.isEmpty());
-		assertEquals(2, networkServices.size());
-		Iterator<NetworkService> iterator = networkServices.iterator();
-		NetworkServiceA serviceA = (NetworkServiceA) iterator.next();
-		NetworkServiceB serviceB = (NetworkServiceB) iterator.next();
-		assertEquals("id11", serviceA.getDevice());
-		assertEquals("value11_1", serviceA.getConfiguration().get("paramA1"));
-		assertEquals("id11", serviceB.getDevice());
-		assertEquals("value11_2", serviceB.getConfiguration().get("configB2"));
-		assertEquals("value11_1", serviceB.getConfiguration().get("configB1"));
-	}
+        Collection<NetworkService> networkServices = mappingService.dryRun(device1Config, mappingService.getMappingLogic());
+        assertFalse(networkServices.isEmpty());
+        assertEquals(2, networkServices.size());
+        Iterator<NetworkService> iterator = networkServices.iterator();
+        NetworkServiceA serviceA = (NetworkServiceA) iterator.next();
+        NetworkServiceB serviceB = (NetworkServiceB) iterator.next();
+        assertEquals("id11", serviceA.getDevice());
+        assertEquals("value11_1", serviceA.getConfiguration().get("paramA1"));
+        assertEquals("id11", serviceB.getDevice());
+        assertEquals("value11_2", serviceB.getConfiguration().get("configB2"));
+        assertEquals("value11_1", serviceB.getConfiguration().get("configB1"));
+    }
 
-	@Test
-	void mappingDevice1ToService() {
-		Device1Config device1Config = config1("device12.json");
+    @Test
+    void mappingDevice1ToService() {
+        Device1Config device1Config = config1("device12.json");
 
-		Collection<NetworkService> networkServices = mappingService.dryRun(device1Config);
-		assertFalse(networkServices.isEmpty());
-		assertEquals(1, networkServices.size());
-		Iterator<NetworkService> iterator = networkServices.iterator();
-		NetworkServiceB serviceB = (NetworkServiceB) iterator.next();
-		assertEquals("id12", serviceB.getDevice());
-		assertEquals("value12_2", serviceB.getConfiguration().get("configB2"));
-		assertFalse(serviceB.getConfiguration().containsKey("configB1"));
-	}
+        Collection<NetworkService> networkServices = mappingService.dryRun(device1Config, mappingService.getMappingLogic());
+        assertFalse(networkServices.isEmpty());
+        assertEquals(1, networkServices.size());
+        Iterator<NetworkService> iterator = networkServices.iterator();
+        NetworkServiceB serviceB = (NetworkServiceB) iterator.next();
+        assertEquals("id12", serviceB.getDevice());
+        assertEquals("value12_2", serviceB.getConfiguration().get("configB2"));
+        assertNull(serviceB.getConfiguration().get("configB1"));
+    }
 
-	@Test
-	void mappingDevice1ToNetworkServiceB() {
-		Device1Config device1Config = new Device1Config();
-		device1Config.getConfig().put("param2", "tomato");
+    @Test
+    void mappingDevice2ToService() {
+        Device2Config device2Config = config2("device21.txt");
 
-		Collection<NetworkService> networkServices = mappingService.dryRun(device1Config);
-		assertFalse(networkServices.isEmpty());
+        Collection<NetworkService> networkServices = mappingService.dryRun(device2Config, mappingService.getMappingLogic());
+        assertFalse(networkServices.isEmpty());
 
-		NetworkServiceB serviceB = (NetworkServiceB) networkServices.iterator().next();
-		assertEquals("id11", serviceB.getDevice());
-		assertEquals("value11", serviceB.getConfiguration().get("configB1"));
-		assertEquals("value12", serviceB.getConfiguration().get("configB2"));
+        assertEquals(1, networkServices.size());
+        Iterator<NetworkService> iterator = networkServices.iterator();
+        NetworkServiceA serviceA = (NetworkServiceA) iterator.next();
+        assertEquals("uuid21", serviceA.getDevice());
+        assertEquals("value21_1", serviceA.getConfiguration().get("paramA1"));
+        assertEquals("0", serviceA.getConfiguration().get("paramA2"));
+    }
 
-	}
+    @Test
+    void mappingDevice2ToServiceAC() {
+        Device2Config device2Config = config2("device22.txt");
 
-	private Device1Config config1(String file) {
-		try {
-			Device1Config config = new Device1Config();
-			HashMap map = objectMapper.readValue(new File("input", file), HashMap.class);
-			config.setConfig(map);
-			return config;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+        Collection<NetworkService> networkServices = mappingService.dryRun(device2Config, mappingService.getMappingLogic());
+        assertFalse(networkServices.isEmpty());
+
+        assertEquals(2, networkServices.size());
+        Iterator<NetworkService> iterator = networkServices.iterator();
+        NetworkServiceA serviceA = (NetworkServiceA) iterator.next();
+        assertEquals("uuid22", serviceA.getDevice());
+        assertEquals("value22_1", serviceA.getConfiguration().get("paramA1"));
+        assertEquals("0", serviceA.getConfiguration().get("paramA2"));
+
+        NetworkServiceC serviceC = (NetworkServiceC) iterator.next();
+        assertEquals("uuid22", serviceC.getDevice());
+        assertEquals("value22_3", serviceC.getConfiguration().get("configC2"));
+        assertEquals("value22_1", serviceC.getConfiguration().get("configC1"));
+    }
+
+    @Test
+    void mappingDevice2ToServiceB() {
+        Device2Config device2Config = config2("device23.txt");
+
+        Collection<NetworkService> networkServices = mappingService.dryRun(device2Config, mappingService.getMappingLogic());
+        assertFalse(networkServices.isEmpty());
+
+        assertEquals(1, networkServices.size());
+        Iterator<NetworkService> iterator = networkServices.iterator();
+        NetworkServiceB serviceB = (NetworkServiceB) iterator.next();
+        assertEquals("uuid23", serviceB.getDevice());
+        assertEquals("value23_2", serviceB.getConfiguration().get("configB2"));
+        assertEquals("value23_1", serviceB.getConfiguration().get("configB1"));
+    }
+
+    @Test
+    void testScheduling() {
+        MappingServiceImpl m = (MappingServiceImpl) mappingService;
+        m.createExecutionJob().run();
+    }
+
+    private Device1Config config1(String file) {
+        try {
+            Device1Config config = new Device1Config();
+            HashMap map = objectMapper.readValue(new File("input", file), HashMap.class);
+            config.setConfig(map);
+            return config;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Device2Config config2(String file) {
+        try (FileInputStream stream = new FileInputStream(new File("input", file))) {
+            Properties appProps = new Properties();
+            appProps.load(stream);
+            Map<String, Object> config = new HashMap<>();
+            appProps.forEach((key, value) -> config.put(key + "", value));
+            Device2Config device2Config = new Device2Config();
+            device2Config.setConfig(config);
+            return device2Config;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

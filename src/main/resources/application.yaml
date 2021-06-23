@@ -9,6 +9,7 @@ services:
 
 
 mapping:
+  threads: 2
   logic: |
     package com.swisscom.kratos.service;
 
@@ -24,6 +25,7 @@ mapping:
         deviceConfig: com.swisscom.kratos.model.Device1Config()
       then
         config = deviceConfig.getConfig()
+        // if exists param1, then create network service A
         if (config["param1"] != null) {
             NetworkServiceA ns = new NetworkServiceA();
             ns.serviceId = deviceConfig.deviceId + "_serviceA";
@@ -31,19 +33,51 @@ mapping:
             ns.configuration["paramA1"] = config["param1"];
             results.add(ns);
         }
+        // if exists param2, then create network service B
         if (config["param2"] != null) {
             NetworkServiceB ns2 = new NetworkServiceB();
             ns2.serviceId = deviceConfig.deviceId + "_serviceB";
             ns2.device = config["deviceId"];
             ns2.configuration["configB1"] = config["param1"];
             ns2.configuration["configB2"] = config["param2"];
+            if (ns2.configuration["configB1"] == null) {
+              ns2.configuration["configB1"] = "";
+            }
             results.add(ns2);
         }
     end
 
     rule "device2 mapping"
       when
-        config: com.swisscom.kratos.model.Device2Config()
+        deviceConfig: com.swisscom.kratos.model.Device2Config()
       then
+        config = deviceConfig.getConfig()
+        // if param1 exists and param2 does not exist, then create network service A
+        if (config["param1"] != null && config["param2"] == null) {
+            NetworkServiceA ns = new NetworkServiceA();
+            ns.serviceId = deviceConfig.deviceId + "_serviceA";
+            ns.device = config["uuid"];
+            ns.configuration["paramA1"] = config["param1"];
+            ns.configuration["paramA2"] = "0";
+            results.add(ns);
+        }
+        // if param2 exists , then create network service B
+        if (config["param2"] != null) {
+            NetworkServiceB ns2 = new NetworkServiceB();
+            ns2.serviceId = deviceConfig.deviceId + "_serviceB";
+            ns2.device = config["uuid"];
+            ns2.configuration["configB1"] = config["param1"];
+            ns2.configuration["configB2"] = config["param2"];
+            results.add(ns2);
+        }
+        // if exists param1 and param2 does not exist and param3  exists , then create network service C
+        if (config["param1"] != null && config["param2"] == null && config["param3"] != null) {
+            NetworkServiceC ns3 = new NetworkServiceC();
+            ns3.serviceId = deviceConfig.deviceId + "_serviceC";
+            ns3.device = config["uuid"];
+            ns3.configuration["configC1"] = config["param1"];
+            ns3.configuration["configC2"] = config["param3"];
+            results.add(ns3);
+        }
 
     end

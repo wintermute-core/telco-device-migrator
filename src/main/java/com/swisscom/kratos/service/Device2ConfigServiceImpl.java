@@ -42,8 +42,8 @@ public class Device2ConfigServiceImpl extends AbstractDeviceConfigService {
             return Optional.empty();
         }
 
-        Properties appProps = new Properties();
         try (FileInputStream stream = new FileInputStream(file)) {
+            Properties appProps = new Properties();
             appProps.load(stream);
             Map<String, Object> config = new HashMap<>();
             appProps.forEach((key, value) -> config.put(key + "", value));

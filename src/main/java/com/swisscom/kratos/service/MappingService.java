@@ -19,7 +19,7 @@ public interface MappingService {
     /**
      * Test mapping of one device config to network service
      */
-    Collection<NetworkService> dryRun(DeviceConfig config);
+    Collection<NetworkService> dryRun(DeviceConfig config, MappingLogic logic);
 
     /**
      * Submit for async execution mapping task of all devices to network services.
