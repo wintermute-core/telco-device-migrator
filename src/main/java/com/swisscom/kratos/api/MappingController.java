@@ -7,11 +7,8 @@ import com.swisscom.kratos.model.MappingLogic;
 import com.swisscom.kratos.model.NetworkService;
 import com.swisscom.kratos.service.DeviceConfigService;
 import com.swisscom.kratos.service.MappingService;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -59,7 +56,7 @@ public class MappingController {
         return currentCode;
     }
 
-    @RequestMapping(value = "/run/dry", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    @PostMapping("/run/dry")
     public String dryRun(@RequestParam("serviceId") String serviceId, @RequestParam("deviceId") String deviceId) throws JsonProcessingException {
 
         if (!serviceMap.containsKey(serviceId)) {
