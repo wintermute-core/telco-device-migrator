@@ -2,14 +2,13 @@ package com.swisscom.kratos.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swisscom.kratos.model.NetworkService;
+import java.io.File;
+import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Persist service updates in files
@@ -23,8 +22,8 @@ public class NetworkServiceConfigurerImpl implements NetworkServiceConfigurer {
     private final ObjectMapper objectMapper;
 
     public NetworkServiceConfigurerImpl(@Value("${services.output}") String outputDir,
-                                        @Autowired
-                                        @Qualifier("yamlObjectMapper") ObjectMapper objectMapper) {
+            @Autowired
+            @Qualifier("yamlObjectMapper") ObjectMapper objectMapper) {
 
         this.outputDir = outputDir;
         this.objectMapper = objectMapper;

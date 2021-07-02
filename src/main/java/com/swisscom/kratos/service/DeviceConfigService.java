@@ -1,7 +1,6 @@
 package com.swisscom.kratos.service;
 
 import com.swisscom.kratos.model.DeviceConfig;
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;

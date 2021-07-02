@@ -7,12 +7,22 @@ import com.swisscom.kratos.model.MappingLogic;
 import com.swisscom.kratos.model.NetworkService;
 import com.swisscom.kratos.service.DeviceConfigService;
 import com.swisscom.kratos.service.MappingService;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.PostConstruct;
-import java.util.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Rest controller to map devices
@@ -57,7 +67,8 @@ public class MappingController {
     }
 
     @PostMapping("/run/dry")
-    public String dryRun(@RequestParam("serviceId") String serviceId, @RequestParam("deviceId") String deviceId) throws JsonProcessingException {
+    public String dryRun(@RequestParam("serviceId") String serviceId, @RequestParam("deviceId") String deviceId)
+            throws JsonProcessingException {
 
         if (!serviceMap.containsKey(serviceId)) {
             return "Service not found";
@@ -73,7 +84,8 @@ public class MappingController {
         } catch (Exception e) {
             throw new RuntimeException("Failed to read device config", e);
         }
-        Collection<NetworkService> networkServices = mappingService.dryRun(deviceConfig, MappingLogic.builder().code(currentCode).build());
+        Collection<NetworkService> networkServices = mappingService
+                .dryRun(deviceConfig, MappingLogic.builder().code(currentCode).build());
 
         return objectMapper.writeValueAsString(networkServices);
     }

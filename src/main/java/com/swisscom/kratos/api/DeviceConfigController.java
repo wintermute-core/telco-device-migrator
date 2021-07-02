@@ -2,12 +2,18 @@ package com.swisscom.kratos.api;
 
 import com.swisscom.kratos.model.DeviceConfig;
 import com.swisscom.kratos.service.DeviceConfigService;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import javax.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.PostConstruct;
-import java.util.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Rest controller to query device configuration services
@@ -42,8 +48,9 @@ public class DeviceConfigController {
         return map.get(service).listDevices();
     }
 
-    @PostMapping("/service/{service}/device/{device}")
-    public DeviceConfig readDeviceConfig(@PathVariable("service") String service, @PathVariable("device") String device) {
+    @GetMapping("/service/{service}/device/{device}")
+    public DeviceConfig readDeviceConfig(@PathVariable("service") String service,
+            @PathVariable("device") String device) {
         if (!map.containsKey(service)) {
             throw new RuntimeException("Device service not found");
         }

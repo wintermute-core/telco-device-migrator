@@ -1,9 +1,6 @@
 package com.swisscom.kratos.service;
 
 import com.swisscom.kratos.model.DeviceConfig;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  * Common code for configuration service

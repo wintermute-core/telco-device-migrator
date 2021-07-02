@@ -3,6 +3,16 @@ package com.swisscom.kratos.service;
 import com.swisscom.kratos.model.DeviceConfig;
 import com.swisscom.kratos.model.MappingLogic;
 import com.swisscom.kratos.model.NetworkService;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.Future;
+import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.drools.core.impl.InternalKnowledgeBase;
 import org.drools.core.impl.KnowledgeBaseFactory;
@@ -18,12 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.concurrent.Future;
 
 @Service
 @Slf4j
@@ -119,7 +123,8 @@ public class MappingServiceImpl implements MappingService {
 
     private KieSession mapRules(MappingLogic mappingLogic) throws IOException {
         KnowledgeBuilder kb = KnowledgeBuilderFactory.newKnowledgeBuilder();
-        kb.add(ResourceFactory.newByteArrayResource(mappingLogic.getCode().getBytes(StandardCharsets.UTF_8)), ResourceType.DRL);
+        kb.add(ResourceFactory.newByteArrayResource(mappingLogic.getCode().getBytes(StandardCharsets.UTF_8)),
+                ResourceType.DRL);
 
         KnowledgeBuilderErrors errors = kb.getErrors();
         for (KnowledgeBuilderError error : errors) {

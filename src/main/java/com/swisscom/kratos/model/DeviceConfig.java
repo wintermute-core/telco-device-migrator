@@ -1,9 +1,8 @@
 package com.swisscom.kratos.model;
 
-import lombok.Data;
-
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Data;
 
 /**
  * Device configuration

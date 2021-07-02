@@ -1,5 +1,9 @@
 package com.swisscom.kratos;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.swisscom.kratos.model.NetworkServiceA;
@@ -7,14 +11,11 @@ import com.swisscom.kratos.model.NetworkServiceB;
 import com.swisscom.kratos.model.NetworkServiceC;
 import com.swisscom.kratos.service.NetworkServiceConfigurer;
 import com.swisscom.kratos.service.NetworkServiceConfigurerImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 public class NetworkServiceConfigurerTest {

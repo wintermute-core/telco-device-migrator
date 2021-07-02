@@ -3,16 +3,15 @@ package com.swisscom.kratos.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swisscom.kratos.model.Device1Config;
 import com.swisscom.kratos.model.DeviceConfig;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j

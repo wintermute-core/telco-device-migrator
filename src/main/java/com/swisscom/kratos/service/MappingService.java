@@ -3,7 +3,6 @@ package com.swisscom.kratos.service;
 import com.swisscom.kratos.model.DeviceConfig;
 import com.swisscom.kratos.model.MappingLogic;
 import com.swisscom.kratos.model.NetworkService;
-
 import java.util.Collection;
 
 /**

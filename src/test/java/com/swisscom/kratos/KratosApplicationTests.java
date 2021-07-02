@@ -1,21 +1,31 @@
 package com.swisscom.kratos;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.swisscom.kratos.model.*;
+import com.swisscom.kratos.model.Device1Config;
+import com.swisscom.kratos.model.Device2Config;
+import com.swisscom.kratos.model.NetworkService;
+import com.swisscom.kratos.model.NetworkServiceA;
+import com.swisscom.kratos.model.NetworkServiceB;
+import com.swisscom.kratos.model.NetworkServiceC;
 import com.swisscom.kratos.service.MappingService;
 import com.swisscom.kratos.service.MappingServiceImpl;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class KratosApplicationTests {
@@ -34,7 +44,8 @@ class KratosApplicationTests {
     void mappingDevice1ToMultipleServices() {
         Device1Config device1Config = config1("device11.json");
 
-        Collection<NetworkService> networkServices = mappingService.dryRun(device1Config, mappingService.getMappingLogic());
+        Collection<NetworkService> networkServices = mappingService
+                .dryRun(device1Config, mappingService.getMappingLogic());
         assertFalse(networkServices.isEmpty());
         assertEquals(2, networkServices.size());
         Iterator<NetworkService> iterator = networkServices.iterator();
@@ -51,7 +62,8 @@ class KratosApplicationTests {
     void mappingDevice1ToService() {
         Device1Config device1Config = config1("device12.json");
 
-        Collection<NetworkService> networkServices = mappingService.dryRun(device1Config, mappingService.getMappingLogic());
+        Collection<NetworkService> networkServices = mappingService
+                .dryRun(device1Config, mappingService.getMappingLogic());
         assertFalse(networkServices.isEmpty());
         assertEquals(1, networkServices.size());
         Iterator<NetworkService> iterator = networkServices.iterator();
@@ -65,7 +77,8 @@ class KratosApplicationTests {
     void mappingDevice2ToService() {
         Device2Config device2Config = config2("device21.txt");
 
-        Collection<NetworkService> networkServices = mappingService.dryRun(device2Config, mappingService.getMappingLogic());
+        Collection<NetworkService> networkServices = mappingService
+                .dryRun(device2Config, mappingService.getMappingLogic());
         assertFalse(networkServices.isEmpty());
 
         assertEquals(1, networkServices.size());
@@ -80,7 +93,8 @@ class KratosApplicationTests {
     void mappingDevice2ToServiceAC() {
         Device2Config device2Config = config2("device22.txt");
 
-        Collection<NetworkService> networkServices = mappingService.dryRun(device2Config, mappingService.getMappingLogic());
+        Collection<NetworkService> networkServices = mappingService
+                .dryRun(device2Config, mappingService.getMappingLogic());
         assertFalse(networkServices.isEmpty());
 
         assertEquals(2, networkServices.size());
@@ -100,7 +114,8 @@ class KratosApplicationTests {
     void mappingDevice2ToServiceB() {
         Device2Config device2Config = config2("device23.txt");
 
-        Collection<NetworkService> networkServices = mappingService.dryRun(device2Config, mappingService.getMappingLogic());
+        Collection<NetworkService> networkServices = mappingService
+                .dryRun(device2Config, mappingService.getMappingLogic());
         assertFalse(networkServices.isEmpty());
 
         assertEquals(1, networkServices.size());
